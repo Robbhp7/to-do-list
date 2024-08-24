@@ -9,6 +9,7 @@
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+    <link href="{{mix('css/app.css')}}" rel="stylesheet">
 </head>
 <body>
 <div class="container">
@@ -19,5 +20,6 @@
         Table
     </div>
 </div>
+<script src="{{asset('js/app.js')}}"></script>
 </body>
 </html>
