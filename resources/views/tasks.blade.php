@@ -11,6 +11,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
 </head>
 <body>
-
+<div class="container">
+    <div class="col-12 col-md-4">
+        Add
+    </div>
+    <div class="col-12 col-md-8">
+        Table
+    </div>
+</div>
 </body>
 </html>
