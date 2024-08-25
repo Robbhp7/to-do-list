@@ -57,7 +57,8 @@ class TasksController extends Controller
      */
     public function show($id)
     {
-        //
+        $item = (new TasksRepository)->find($id);
+        return new TaskResource($item, [], []);
     }
 
     /**
@@ -80,7 +81,15 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+        ],[
+            'name.required' => 'The name field is required',
+        ]);
+
+        $item = (new TasksRepository)->update($id, $request->all());
+
+        return redirect()->back();
     }
 
     /**

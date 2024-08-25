@@ -107,4 +107,51 @@ class Repository
             throw $e;
         }
     }
+
+    /**
+     * Search register by ID.
+     *
+     * @param mixed $id
+     * @param array $options Extra options
+     * @return null|Eloquent
+     * @throws Error
+     */
+    public function find($id, array $options = [])
+    {
+        if ($id instanceof $this->model) {
+            return $id;
+        }
+
+        $query = $this->query(array_merge($options, ['find' => $id]));
+
+        return $query->first();
+    }
+
+        /**
+     * Actualiza un registro.
+     *
+     * @param mixed $id
+     * @param array $data Contiene los campos a actualizar.
+     * @param array $options
+     * @return Eloquent
+     * @throws Exception
+     * @throws Throwable
+     */
+    public function update($id, array $data, array $options = [])
+    {
+        DB::beginTransaction();
+        try {
+            $item = $this->find($id, $options);
+
+            $item->fill($data)->save();
+
+            DB::commit();
+
+            return $item;
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
+    }
 }

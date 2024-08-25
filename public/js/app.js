@@ -59,6 +59,162 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
+/***/ "./resources/js/scripts/ajax.js":
+/*!**************************************!*\
+  !*** ./resources/js/scripts/ajax.js ***!
+  \**************************************/
+/***/ ((module) => {
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+$.ajaxSetup({
+  headers: {
+    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+  }
+});
+var AjaxCall = /*#__PURE__*/function () {
+  function AjaxCall() {
+    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    _classCallCheck(this, AjaxCall);
+    _defineProperty(this, "VALID_METHODS", ["get", "post", "put", "delete", "patch"]);
+    this.options = options;
+    this._setup();
+    this._exec();
+  }
+  return _createClass(AjaxCall, [{
+    key: "_setup",
+    value: function _setup() {
+      this.url = this.options.url;
+      this.method = this.options.method || "get";
+      this.data = this.options.data;
+      this.method = this.method.toLowerCase();
+      this._getSetupMethod();
+    }
+  }, {
+    key: "_exec",
+    value: function _exec() {
+      this._loading();
+      $.ajax(this._getConfig());
+    }
+  }, {
+    key: "_add",
+    value: function _add(key, value) {
+      var data = this.data;
+      if (data instanceof FormData) {
+        data.append(key, value);
+      } else if (typeof data === "string") {
+        if (data.length === 0) {
+          data = key + "=";
+        } else {
+          data += "&" + key + "=";
+        }
+      } else if (_typeof(data) === "object") {
+        data[key] = value;
+      } else {
+        data = _defineProperty({}, key, value);
+      }
+      this.data = data;
+    }
+  }, {
+    key: "_getData",
+    value: function _getData() {
+      if (this._method) {
+        this._add("_method", this._method);
+      }
+      return this.data;
+    }
+  }, {
+    key: "_getConfig",
+    value: function _getConfig() {
+      var config = {
+        url: this.url,
+        method: this.method,
+        data: this._getData(),
+        success: this._onSuccess.bind(this),
+        error: this._onError.bind(this),
+        complete: this._onComplete.bind(this)
+      };
+      if (this.data instanceof FormData) {
+        config.processData = false;
+        config.contentType = false;
+      }
+      return config;
+    }
+  }, {
+    key: "_getSetupMethod",
+    value: function _getSetupMethod() {
+      if (this.VALID_METHODS.indexOf(this.method) === -1) {
+        console.error("Method not valid: " + JSON.stringify(this.method));
+      }
+      var requestMethod,
+        _method = this.method;
+      switch (_method) {
+        case "put":
+        case "delete":
+        case "patch":
+          requestMethod = "post";
+          break;
+        default:
+          requestMethod = _method;
+          _method = undefined;
+      }
+      this.method = requestMethod;
+      this._method = _method;
+    }
+  }, {
+    key: "_onSuccess",
+    value: function _onSuccess(res) {
+      if (this.options.onSuccess) {
+        this.options.onSuccess(res);
+      }
+    }
+
+    /**
+     * @param {Error} e
+     */
+  }, {
+    key: "_onError",
+    value: function _onError(e) {
+      if (this.options.onError) {
+        this.options.onError(e);
+      }
+      var message = e.message;
+      if (e.responseJSON) {
+        message = e.responseJSON.message || e.responseJSON.error;
+      }
+    }
+  }, {
+    key: "_onComplete",
+    value: function _onComplete(e) {
+      if (this.options.onComplete) {
+        this.options.onComplete();
+      }
+      this._loading(false);
+    }
+  }, {
+    key: "_loading",
+    value: function _loading() {
+      var isLoading = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+    }
+  }]);
+}();
+function ajaxCall() {
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  return new AjaxCall(options);
+}
+window.AjaxCall = AjaxCall;
+window.ajaxCall = ajaxCall;
+module.exports = {
+  create: ajaxCall
+};
+
+/***/ }),
+
 /***/ "./resources/js/scripts/alerts.js":
 /*!****************************************!*\
   !*** ./resources/js/scripts/alerts.js ***!
@@ -100,7 +256,9 @@ module.exports = {
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
 var Alerts = __webpack_require__(/*! ./alerts */ "./resources/js/scripts/alerts.js");
+var Ajax = __webpack_require__(/*! ./ajax */ "./resources/js/scripts/ajax.js");
 window.App = {
+  Ajax: Ajax,
   Alerts: Alerts
 };
 

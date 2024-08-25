@@ -70,12 +70,41 @@ class TasksRepository extends Repository
      * Gets all registers.
      *
      * @param array
-     * @return \Illuminate\Support\Collection|Audit[]
+     * @return \Illuminate\Support\Collection|Task[]
      * @throws \Error
      */
     public function all(array $options = [])
     {
         return parent::all($options);
+    }
+
+    /**
+     * Search register by ID.
+     *
+     * @param int $id
+     * @param array $options Extra options
+     * @return null|Task
+     * @throws \Error
+     */
+    public function find($id, array $options = [])
+    {
+        return parent::find($id, $options);
+    }
+
+
+    /**
+     * Updates a register.
+     *
+     * @param int $id
+     * @param array $data Has all fields to update.
+     * @param array $options
+     * @return Task
+     * @throws \Exception
+     * @throws \Throwable
+     */
+    public function update($id, array $data, array $options = [])
+    {
+        return parent::update($id, $data, $options);
     }
 
 }
