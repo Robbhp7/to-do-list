@@ -35,6 +35,13 @@
 </div>
 @endsection
 @section('js')
+<script>
+    $(function(){
+        App.Alerts.onConfirm(function(){
+            console.log("entro");
+        });
+    });
+</script>
 @endsection
 @section('modals')
 <x-modals.basic title="Create Task" id="modal-create" body="tasks.partials.form"/>
