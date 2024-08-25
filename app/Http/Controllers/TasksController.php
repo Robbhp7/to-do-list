@@ -46,6 +46,11 @@ class TasksController extends Controller
 
         $item = (new TasksRepository)->create($request->all());
 
+        if($request->ajax)
+        {
+            return new TaskResource($item, [], []);
+        }
+
         return redirect()->back();
     }
 
@@ -88,6 +93,11 @@ class TasksController extends Controller
         ]);
 
         $item = (new TasksRepository)->update($id, $request->all());
+
+        if($request->ajax)
+        {
+            return new TaskResource($item, [], []);
+        }
 
         return redirect()->back();
     }
