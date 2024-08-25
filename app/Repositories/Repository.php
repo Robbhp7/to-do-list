@@ -140,7 +140,7 @@ class Repository
      * Actualiza un registro.
      *
      * @param mixed $id
-     * @param array $data Contiene los campos a actualizar.
+     * @param array $data Has data to update.
      * @param array $options
      * @return Eloquent
      * @throws Exception
@@ -181,7 +181,7 @@ class Repository
         try {
             $item = $this->find($id, $options);
 
-            // validar que el registro exista
+            // Validates the register exists
             if (!$item) {
                 dd('Error');
             }
