@@ -107,6 +107,8 @@ class TasksController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $item = (new TasksRepository)->delete($id);
+
+        return redirect()->back();
     }
 }

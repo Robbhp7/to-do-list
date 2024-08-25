@@ -124,4 +124,18 @@ class TasksRepository extends Repository
     {
         return parent::update($id, $data, $options);
     }
+
+    /**
+     * Deletes a register.
+     *
+     * @param int $id
+     * @param array $options
+     * @return Task
+     * @throws \Exception
+     * @throws \Throwable
+     */
+    public function delete($id, array $options = [])
+    {
+        return parent::delete($id, $options);
+    }
 }

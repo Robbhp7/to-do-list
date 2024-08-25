@@ -165,4 +165,35 @@ class Repository
             throw $e;
         }
     }
+
+    /**
+     * Deletes a register.
+     *
+     * @param mixed $id
+     * @param array $options
+     * @return Eloquent|null
+     * @throws Exception
+     * @throws Throwable
+     */
+    public function delete($id, array $options = [])
+    {
+        DB::beginTransaction();
+        try {
+            $item = $this->find($id, $options);
+
+            // validar que el registro exista
+            if (!$item) {
+                dd('Error');
+            }
+            $item->delete();
+
+            DB::commit();
+
+            return $item;
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
+    }
 }

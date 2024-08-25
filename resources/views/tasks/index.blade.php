@@ -33,7 +33,7 @@
                             <div class="btn btn-group">
                                 <button class="btn btn-success btn-sm btn-completed" data-item_id="{{$item->id}}"><i class="fas fa-check text-white"></i></button>
                                 <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-edit" data-item_id="{{$item->id}}"><i class="fas fa-edit text-white"></i></button>
-                                <button class="btn btn-danger btn-sm" data-item_id="{{$item->id}}"><i class="fas fa-close text-white"></i></button>
+                                <button class="btn btn-danger btn-sm btn-delete" data-item_id="{{$item->id}}"><i class="fas fa-close text-white"></i></button>
                             </div>
                         @endif
                     </td>
@@ -94,6 +94,27 @@
                 title: 'Mark task as completed',
                 message: 'Are you sure you want to do this action?',
                 icon: 'success',
+            });
+        });
+
+        $("body").on("click", ".btn-delete", function(e){
+            let $btn = $(this);
+            let item_id = $btn.data("item_id");
+
+            let route = "{{route('tasks.destroy', ':item_id')}}".replace(":item_id", item_id);
+
+            App.Alerts.onConfirm(function(){
+                    App.Ajax.create({
+                    url: route,
+                    method: 'delete',
+                    onSuccess: function (res) {
+                        let item = res.data;
+                        location.reload();
+                    }
+                });
+            }, {
+                title: 'Delete task',
+                message: 'Are you sure you want to do this action?',
             });
         });
     });
