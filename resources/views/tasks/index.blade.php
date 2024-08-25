@@ -39,9 +39,9 @@
                     data: null,
                     defaultContent: `
                             <div class="btn btn-group">\
-                                <button class="btn btn-success btn-sm btn-completed" data-item_id="RESOURCE_ID"><i class="fas fa-check text-white"></i></button>\
-                                <button class="btn btn-primary btn-sm btn-edit" data-bs-toggle="modal" data-bs-target="#modal-edit" data-item_id="RESOURCE_ID"><i class="fas fa-edit text-white"></i></button>\
-                                <button class="btn btn-danger btn-sm btn-delete" data-item_id="RESOURCE_ID"><i class="fas fa-close text-white"></i></button>\
+                                <button class="btn btn-success btn-sm btn-completed" data-item_id="ITEM_ID"><i class="fas fa-check text-white"></i></button>\
+                                <button class="btn btn-primary btn-sm btn-edit" data-bs-toggle="modal" data-bs-target="#modal-edit" data-item_id="ITEM_ID"><i class="fas fa-edit text-white"></i></button>\
+                                <button class="btn btn-danger btn-sm btn-delete" data-item_id="ITEM_ID"><i class="fas fa-close text-white"></i></button>\
                             </div>`,
                     width: '20%'
                 }
