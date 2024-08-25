@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Tasks\TaskResource;
+use App\Repositories\Tasks\TasksRepository;
 use Illuminate\Http\Request;
 
 class TasksController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index(Request $request)
     {
-        //
+        $items = (new TasksRepository)->all();
+
+        if($request->ajax)
+        {
+            return new TaskResource($items, [], []);
+        }
+        return view('tasks.index', compact('items'));
     }
 
     /**
@@ -34,7 +38,15 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+        ],[
+            'name.required' => 'The name field is required',
+        ]);
+
+        $item = (new TasksRepository)->create($request->all());
+
+        return redirect()->back();
     }
 
     /**
