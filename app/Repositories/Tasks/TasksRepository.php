@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 
 //Models
 use App\Models\Tasks\Task;
+use Carbon\Carbon;
 
 class TasksRepository extends Repository
 {
@@ -18,6 +19,23 @@ class TasksRepository extends Repository
      * @var string
      */
     protected $model = Task::class;
+
+
+    /**
+     * This function prepares extra data during creation/updating records.
+     * @param array $data
+     * @param array $options
+     * @return array
+     */
+    protected function prepareData(array $data, array $options = [], string $method)
+    {
+        if($method == 'update-status')
+        {
+            $data['completed_at'] = Carbon::now('Europe/London');
+        }
+
+        return $data;
+    }
 
     /**
      * Validate if user can create register.
@@ -106,5 +124,4 @@ class TasksRepository extends Repository
     {
         return parent::update($id, $data, $options);
     }
-
 }

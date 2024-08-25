@@ -228,13 +228,14 @@ function onConfirm(callback) {
   var message = options.message || 'Message';
   var confirm = options.confirm || 'Confirm';
   var cancel = options.cancel || 'Cancel';
+  var icon = options.icon || 'warning';
   Swal.fire({
     title: title,
     text: message,
-    icon: "warning",
+    icon: icon,
     showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
+    confirmButtonColor: "#337ab7",
+    cancelButtonColor: "#d9534f",
     confirmButtonText: confirm,
     cancelButtonText: cancel
   }).then(function (result) {

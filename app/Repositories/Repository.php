@@ -31,6 +31,17 @@ class Repository
         $this->modelInstance = new $this->model;
     }
 
+    /**
+     * This function prepares extra data during creation/updating records.
+     * @param array $data
+     * @param array $options
+     * @return array
+     */
+    protected function prepareData(array $data, array $options = [], string $method)
+    {
+        return $data;
+    }
+
     /*.
      *
      * @param array $options Extra options to filter/add
@@ -122,9 +133,7 @@ class Repository
             return $id;
         }
 
-        $query = $this->query(array_merge($options, ['find' => $id]));
-
-        return $query->first();
+        return $this->modelInstance->find($id);
     }
 
         /**
@@ -141,6 +150,8 @@ class Repository
     {
         DB::beginTransaction();
         try {
+            $method = $options['method'] ?? 'update';
+            $data = $this->prepareData($data, $options, $method);
             $item = $this->find($id, $options);
 
             $item->fill($data)->save();

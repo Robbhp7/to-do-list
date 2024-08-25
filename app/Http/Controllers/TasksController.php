@@ -92,6 +92,13 @@ class TasksController extends Controller
         return redirect()->back();
     }
 
+    public function updateStatus(Request $request, $id)
+    {
+        $item = (new TasksRepository)->update($id, $request->all(), ['method' => 'update-status']);
+
+        return redirect()->back();
+    }
+
     /**
      * Remove the specified resource from storage.
      *

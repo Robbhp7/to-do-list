@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->enum('status', ['pending', 'completed'])->default('pending');
+            $table->timestamp('completed_at')->nullable();
             $table->timestamps();
         });
     }
