@@ -2,7 +2,7 @@
 @section('content')
 <img src="{{asset('assets/logo.png')}}" alt="MLP logo" class="mt-2 mb-5">
 <div class="row">
-    <div class="col-12 col-md-4">
+    <div class="col-12 col-md-4 mb-2 mb-md-0">
         <form action="{{route('tasks.store')}}" method="POST" id="form-create">
             @csrf
             @include('tasks.partials.form')
@@ -77,6 +77,7 @@
                 data:{
                     ajax: true,
                 },
+                showAlert: false,
                 onSuccess: function (res) {
                     let item = res.data;
 

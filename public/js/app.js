@@ -89,10 +89,14 @@ var AjaxCall = /*#__PURE__*/function () {
   return _createClass(AjaxCall, [{
     key: "_setup",
     value: function _setup() {
+      var _this$options$showAle;
       this.url = this.options.url;
       this.method = this.options.method || "get";
       this.data = this.options.data;
       this.method = this.method.toLowerCase();
+      this.alertsMode = this.options.alertsMode || "toast";
+      this.alertsMessages = this.options.alertsMessages;
+      this.showAlert = (_this$options$showAle = this.options.showAlert) !== null && _this$options$showAle !== void 0 ? _this$options$showAle : true;
       this._getSetupMethod();
     }
   }, {
@@ -172,6 +176,14 @@ var AjaxCall = /*#__PURE__*/function () {
       if (this.options.onSuccess) {
         this.options.onSuccess(res);
       }
+      handleAlert({
+        mode: this.alertsMode,
+        messages: this.alertsMessages || {
+          success: res.message
+        },
+        status: "success",
+        showAlert: this.showAlert
+      });
     }
 
     /**
@@ -187,6 +199,14 @@ var AjaxCall = /*#__PURE__*/function () {
       if (e.responseJSON) {
         message = e.responseJSON.message || e.responseJSON.error;
       }
+      handleAlert({
+        mode: this.alertsMode,
+        messages: this.alertsMessages || {
+          error: message
+        },
+        status: "error",
+        showAlert: this.showAlert
+      });
     }
   }, {
     key: "_onComplete",
@@ -203,6 +223,20 @@ var AjaxCall = /*#__PURE__*/function () {
     }
   }]);
 }();
+function handleAlert() {
+  var _options$showAlert;
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var messages = options.messages || {};
+  var mode = options.mode;
+  var status = options.status;
+  var showAlert = (_options$showAlert = options.showAlert) !== null && _options$showAlert !== void 0 ? _options$showAlert : true;
+  var title = messages[status];
+  if (showAlert) {
+    App.Toast[status]({
+      title: title
+    });
+  }
+}
 function ajaxCall() {
   var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   return new AjaxCall(options);
@@ -258,9 +292,55 @@ module.exports = {
 
 var Alerts = __webpack_require__(/*! ./alerts */ "./resources/js/scripts/alerts.js");
 var Ajax = __webpack_require__(/*! ./ajax */ "./resources/js/scripts/ajax.js");
+var Toast = __webpack_require__(/*! ./toast */ "./resources/js/scripts/toast.js");
 window.App = {
   Ajax: Ajax,
-  Alerts: Alerts
+  Alerts: Alerts,
+  Toast: Toast
+};
+
+/***/ }),
+
+/***/ "./resources/js/scripts/toast.js":
+/*!***************************************!*\
+  !*** ./resources/js/scripts/toast.js ***!
+  \***************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var Swal = (__webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js")["default"]);
+var Toast = Swal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 1000,
+  timerProgressBar: true,
+  didOpen: function didOpen(toast) {
+    toast.addEventListener("mouseenter", Swal.stopTimer);
+    toast.addEventListener("mouseleave", Swal.resumeTimer);
+  }
+});
+
+/**
+ *
+ * @param {'warning' | 'error'  | 'success' | 'info' | 'question'} icon
+ * @param {*} title
+ * @param {*} message
+ */
+function toast(icon, title, message) {
+  Toast.fire({
+    icon: icon,
+    title: title,
+    text: message
+  });
+}
+function success() {
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var title = options.title || 'Success';
+  var message = options.message || '';
+  toast("success", title, message);
+}
+module.exports = {
+  success: success
 };
 
 /***/ }),

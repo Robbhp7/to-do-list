@@ -15,6 +15,9 @@
     <body>
         <div class="container py-4">
             @yield('content')
+            <div class="d-flex justify-content-center mt-5">
+                <small class="mt-5">Copyright© {{Carbon\Carbon::now()->format('Y')}} All Rights Reserved.</small>
+            </div>
         </div>
 
         <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>

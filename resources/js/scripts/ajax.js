@@ -18,8 +18,10 @@ class AjaxCall {
         this.url = this.options.url;
         this.method = this.options.method || "get";
         this.data = this.options.data;
-
         this.method = this.method.toLowerCase();
+        this.alertsMode = this.options.alertsMode || "toast";
+        this.alertsMessages = this.options.alertsMessages;
+        this.showAlert = this.options.showAlert ?? true;
 
         this._getSetupMethod();
     }
@@ -102,6 +104,13 @@ class AjaxCall {
         if (this.options.onSuccess) {
             this.options.onSuccess(res);
         }
+
+        handleAlert({
+            mode: this.alertsMode,
+            messages: this.alertsMessages || { success: res.message },
+            status: "success",
+            showAlert: this.showAlert,
+        });
     }
 
     /**
@@ -117,6 +126,13 @@ class AjaxCall {
         if (e.responseJSON) {
             message = e.responseJSON.message || e.responseJSON.error;
         }
+
+        handleAlert({
+            mode: this.alertsMode,
+            messages: this.alertsMessages || { error: message },
+            status: "error",
+            showAlert: this.showAlert,
+        });
     }
 
     _onComplete(e) {
@@ -129,6 +145,20 @@ class AjaxCall {
 
     _loading(isLoading = true) {
 
+    }
+}
+
+function handleAlert(options = {}) {
+    var messages = options.messages || {};
+    var mode = options.mode;
+    var status = options.status;
+    var showAlert = options.showAlert ?? true;
+
+    var title = messages[status];
+
+    if(showAlert)
+    {
+        App.Toast[status]({ title: title });
     }
 }
 
