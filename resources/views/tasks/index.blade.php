@@ -64,8 +64,9 @@
         });
 
         let $modalEdit = $("#modal-edit");
-        $modalEdit.on("show.bs.modal", function(e){
-            let $btn = $(e.relatedTarget);
+
+        $("body").on("click", ".btn-edit", function(e){
+            let $btn = $(this);
             let item_id = $btn.data("item_id");
 
             let route = "{{route('tasks.show', ':item_id')}}".replace(":item_id", item_id);
@@ -141,7 +142,6 @@
                     },
                     onSuccess: function (res) {
                         let item = res.data;
-                        //location.reload();
                         table.ajax.reload();
                     }
                 });
@@ -161,6 +161,9 @@
             App.Alerts.onConfirm(function(){
                     App.Ajax.create({
                     url: route,
+                    data:{
+                        ajax: true,
+                    },
                     method: 'delete',
                     onSuccess: function (res) {
                         let item = res.data;

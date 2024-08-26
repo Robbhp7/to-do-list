@@ -60,9 +60,15 @@ class TasksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $item = (new TasksRepository)->find($id);
+
+        if($request->ajax)
+        {
+            return new TaskResource($item, [], []);
+        }
+
         return new TaskResource($item, [], []);
     }
 
@@ -106,6 +112,11 @@ class TasksController extends Controller
     {
         $item = (new TasksRepository)->update($id, $request->all(), ['method' => 'update-status']);
 
+        if($request->ajax)
+        {
+            return new TaskResource($item, [], []);
+        }
+
         return redirect()->back();
     }
 
@@ -115,9 +126,14 @@ class TasksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $item = (new TasksRepository)->delete($id);
+
+        if($request->ajax)
+        {
+            return new TaskResource($item, [], []);
+        }
 
         return redirect()->back();
     }
